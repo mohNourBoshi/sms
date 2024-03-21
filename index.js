@@ -10,9 +10,9 @@ app.get('/', (req, res) => {
 });
 
 app.post('/sms', express.json(),(req, res) => {
-   let i = req.body
-   let j = req
-   console.log(i,j)
+   let i = req.body.content
+//    let j = req
+   console.log(i)
   res.send(i);
 });
 
