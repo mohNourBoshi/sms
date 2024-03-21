@@ -9,6 +9,10 @@ app.get('/', (req, res) => {
   res.send('Hi');
 });
 
+app.post('/sms', (req, res) => {
+  res.send('Hi');
+});
+
 // Define the port number
 const port = 3000;
 
