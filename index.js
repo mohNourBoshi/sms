@@ -1,5 +1,6 @@
 // Import required modules
 const express = require('express');
+const fs = require('fs');
 
 // Create an instance of express
 const app = express();
