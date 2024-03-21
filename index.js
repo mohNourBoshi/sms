@@ -11,7 +11,8 @@ app.get('/', (req, res) => {
 
 app.post('/sms', express.json(),(req, res) => {
    let i = req.body
-   console.log(i)
+   let j = req
+   console.log(i,j)
   res.send(i);
 });
 
