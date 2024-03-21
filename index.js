@@ -9,8 +9,10 @@ app.get('/', (req, res) => {
   res.send('Hi');
 });
 
-app.post('/sms', (req, res) => {
-  res.send('Hi');
+app.post('/sms', express.json(),(req, res) => {
+   let i = req.body
+   console.log(i)
+  res.send(i);
 });
 
 // Define the port number
