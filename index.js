@@ -10,42 +10,69 @@ app.get('/', (req, res) => {
   res.send('Hi');
 });
 
-app.post('/sms', express.json(),(req, res) => {
-   let i = req.body.content
+app.post('/sms/:idnum', express.json(),(req, res) => {
+    let num= req.params.idnum
+   let i = req.body
+   i =JSON.stringify(i)
+
+   fs.readFile(`${num}.txt`, 'utf8', (err, data) => {
+     if (err) {
+        console.error('Error reading file:', err);
+        return res.status(500).json({ error: 'Internal Server Error' });
+      }
+
+      let dataArray = [];
+      if (data) {
+          // Parse existing data into an array
+          try {
+              dataArray= JSON.parse(data).arr
+          } catch (parseErr) {
+              console.error("Error parsing JSON:", parseErr);
+              res.status(500).send("Error parsing JSON");
+              return;
+          }
+      }
+       // Add incoming data to the array
+       dataArray.push(req.body);
+
+       // Write the updated array back to the file
+       fs.writeFile(`${num}.txt`, JSON.stringify({arr:dataArray}), (writeErr) => {
+        if (writeErr) {
+            console.error("Error writing file:", writeErr);
+            res.status(500).send("Error writing file");
+            return;
+        }
+        console.log("Data saved successfully");
+        res.status(200).send("Data saved successfully");
+    });
+     
+    });
+
 //    let j = req
-   console.log(i)
-  res.send(i);
+   console.log(i,num)
+  //  res.json({ savedData: i });
 });
 
 
 
 // Route to handle POST requests
-app.get('/num', (req, res) => {
+app.get('/sms/:idnum', (req, res) => {
+    let num= req.params.idnum
+
     // Read the number from the file
-    fs.readFile('number.txt', 'utf8', (err, data) => {
+    fs.readFile(`${num}.txt`, 'utf8', (err, data) => {
       if (err) {
         console.error('Error reading file:', err);
         return res.status(500).json({ error: 'Internal Server Error' });
       }
-  
-      // Parse the content of the file as a number
-      let number = parseInt(data);
-  
-      // Increment the number by 1
-      number++;
-  
-      // Write the incremented number back to the file
-      fs.writeFile('number.txt', number.toString(), 'utf8', err => {
-        if (err) {
-          console.error('Error writing file:', err);
-          return res.status(500).json({ error: 'Internal Server Error' });
-        }
-  
-        // Send the incremented number as a response
-        res.json({ incrementedNumber: number });
-      });
+      res.json({ massage: data });
+      
     });
   });
+  
+
+
+
   
 // Define the port number
 const port = 3000;
