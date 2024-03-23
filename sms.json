@@ -1,0 +1,7 @@
+    {
+        "msg":"{msg}",
+        "time":"{time}",
+        "sender":"{sender}",
+        "sim-detail":"{sim-detail}",
+        "formatted-msg":"{formatted-msg}"
+    }

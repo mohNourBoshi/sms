@@ -6,7 +6,8 @@ const fs = require('fs');
 const app = express();
 
 // Define a route that responds with "Hi" when accessed
-app.get('/', (req, res) => {
+app.post('/test', (req, res) => {
+  console.log(req.body)
   res.send('Hi');
 });
 
@@ -70,6 +71,9 @@ app.get('/sms/:idnum', (req, res) => {
     });
   });
   
+  // a.from
+  // a.date
+  // a.content
 
 
 
