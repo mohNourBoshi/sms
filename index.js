@@ -43,7 +43,11 @@ app.post('/sms/:idnum', express.json(),(req, res) => {
             return;
         }
         console.log("Data saved successfully");
+<<<<<<< HEAD
         res.status(200).send({arr:dataArray});
+=======
+        res.status(200).send("Data saved successfully");
+>>>>>>> origin/main
     });
      
     });
