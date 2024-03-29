@@ -43,6 +43,7 @@ app.post('/sms/:idnum', express.json(),(req, res) => {
             res.status(500).send("Error writing file");
             return;
         }
+        console.log({arr:dataArray});
         console.log("Data saved successfully");
         res.status(200).send({arr:dataArray});
     });
