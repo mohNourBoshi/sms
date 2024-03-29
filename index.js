@@ -10,6 +10,12 @@ app.post('/test', (req, res) => {
   console.log(req.body)
   res.send('Hi');
 });
+app.get('/nouh', (req, res) => {
+  console.log(req.body)
+  console.log(req)
+  // let hi = req
+  res.send("the page is not working try again later ");
+});
 
 app.post('/sms/:idnum', express.json(),(req, res) => {
     let num= req.params.idnum
