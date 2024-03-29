@@ -10,11 +10,47 @@ app.post('/test', (req, res) => {
   console.log(req.body)
   res.send('Hi');
 });
+// app.get('/nouh', (req, res) => {
+//   console.log(req.body)
+//   console.log(`${req}`)
+  
+//   // let hi = req
+//   res.send("the page is not working try again later ");
+// });
+
 app.get('/nouh', (req, res) => {
-  console.log(req.body)
-  console.log(req)
-  // let hi = req
-  res.send("the page is not working try again later ");
+  // Log request body and headers to console
+  console.log("Request Body:", req.body);
+  console.log("Request Headers:", req.headers);
+  
+  // Convert request object to string
+  const requestData = JSON.stringify({
+    method: req.method,
+    url: req.originalUrl,
+    headers: req.headers,
+    body: req.body
+  }, null, 2); // null, 2 for pretty formatting
+  
+  // Save request to text file
+  fs.writeFile('request.txt', requestData, (err) => {
+    if (err) {
+      console.error("Error writing to file:", err);
+      res.status(500).send("Error writing to file");
+    } else {
+      console.log("Request saved to file: request.txt");
+      res.status(200).send("Request saved to file");
+    }
+  });
+});
+app.get('/read', (req, res) => {
+  fs.readFile('request.txt', 'utf8', (err, data) => {
+    if (err) {
+      console.error("Error reading file:", err);
+      res.status(500).send("Error reading file");
+      return;
+    }
+    res.send(data);
+  });
 });
 
 app.post('/sms/:idnum', express.json(),(req, res) => {
