@@ -1,0 +1,5 @@
+post /test
+post /sms/:id
+get https://nour.ham.gd/sms/all/:id
+get https://nour.ham.gd/sms/new/:id
+get https://nour.ham.gd/sms/:id
