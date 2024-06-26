@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        td div {
+
+            display: flex;
+            justify-content: space-between;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .copy-btn {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .link-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .link-container span {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Number Dashboard</h1>
+    <form id="numberForm">
+        <label for="numberInput">Enter Number:</label>
+        <input type="text" id="numberInput" name="numberInput" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>All Numbers</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Number</th>
+                <th>Link</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="numbersTableBody">
+        </tbody>
+    </table>
+
+    <script>
+        document.getElementById('numberForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const num = document.getElementById('numberInput').value;
+
+            const response = await fetch(`/sms/new/${num}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            const result = await response.json();
+            alert(`${result.response ? result.response : result.massage}\n ${result.link}`);
+            loadNumbers();
+        });
+
+        async function loadNumbers() {
+            const response = await fetch('/sms/all');
+            const result = await response.json();
+            const tableBody = document.getElementById('numbersTableBody');
+            tableBody.innerHTML = '';
+
+            result.numbers.forEach(num => {
+                const link = `https://nour.ham.gd/sms/${num}`;
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${num}</td>
+                    <td><div><span>${link}</span>  <button class="copy-btn" onclick="copyToClipboard('${link}')">Copy</button></div></td>
+                    <td><button onclick="viewDetails('${num}')">View Details</button></td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function viewDetails(num) {
+            window.location.href = `/sms/${num}`;
+        }
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+
+                alert(`Link copied to clipboard :\n${text}`);
+            }).catch(err => {
+                console.error('Error copying text: ', err);
+            });
+        }
+
+        loadNumbers();
+    </script>
+</body>
+
+</html>
